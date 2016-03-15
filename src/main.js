@@ -10,10 +10,18 @@ var options = {
     autoPlayDuration: 0,
     animation: 'slide',
 };
-var meh = document.getElementById('app').innerHTML;
+
 ReactDOM.render(
     <ElasticSlider options={options}>
-        {meh}
+        <div>
+            lucky number 1
+        </div>
+        <div>
+            slide 2
+        </div>
+        <div>
+            number 3
+        </div>
     </ElasticSlider>,
     document.getElementById('app')
 );
