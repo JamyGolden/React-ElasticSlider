@@ -1,8 +1,10 @@
 'use strict';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ElasticSlider from './js/elasticslider';
-
+// import ElasticSlider from '../../dist/react-elasticslider.min.js';
+import ElasticSlider from '../js/elasticslider.js';
+const html = require('html!./index.html');
+console.log(ElasticSlider);
 var options = {
     activeSlide: 1,
     enableArrows: true,
