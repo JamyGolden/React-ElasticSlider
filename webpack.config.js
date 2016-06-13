@@ -18,6 +18,7 @@ const PATHS = {
 };
 
 module.exports = {
+    devtool: 'source-map',
     entry: {
         app: path.join(PATHS.app, 'js/elasticslider.js'),
     },
