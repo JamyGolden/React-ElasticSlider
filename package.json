@@ -30,7 +30,8 @@
   },
   "scripts": {
     "dist": "webpack",
-    "start": "webpack && webpack --config webpack.config.demo.js && webpack-dev-server --devtool eval --progress --colors --hot --content-base build --port 5000"
+    "setupBuild": "rm -r build && mkdir build && webpack && cp ./dist/react-elasticslider.min.css ./build",
+    "start": "npm run-script setupBuild && webpack --config webpack.config.demo.js && webpack-dev-server --devtool eval --progress --colors --hot --content-base build --port 5000"
   },
   "author": "Jamy Golden",
   "license": "MIT",
