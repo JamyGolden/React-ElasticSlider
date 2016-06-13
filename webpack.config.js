@@ -13,24 +13,28 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const PATHS = {
     absolute: __dirname,
     app: path.resolve(__dirname, 'src'),
-    build: path.resolve(__dirname, 'build')
+    build: path.resolve(__dirname, 'build'),
+    dist: path.resolve(__dirname, 'dist'),
 };
 
 module.exports = {
-    entry: [
-        path.join(PATHS.app, 'main.js'),
-        'webpack-dev-server/client?http://0.0.0.0:8080', // WebpackDevServer host and port
-    ],
+    entry: {
+        app: path.join(PATHS.app, 'js/elasticslider.js'),
+    },
     output: {
-        path: PATHS.build,
-        filename: 'bundle.js'
+        path: PATHS.dist,
+        filename: `${pkg.name.toLowerCase()}.min.js`
     },
     module: {
         loaders: [
             {
-                test: /src\/scss\/.+\.scss$/,
-                loaders: ExtractTextPlugin.extract('css!sass'),
-                include: path.resolve(PATHS.app, 'scss'),
+                test: /dist\/.+\.css$/,
+                loader: ExtractTextPlugin.extract('style', 'css'),
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('style', 'css!sass'),
+                include: [PATHS.app, path.resolve(PATHS.app, 'scss')],
             },
             {
                 test: /src\/.+\.js$/,
@@ -43,50 +47,17 @@ module.exports = {
           }
         ]
     },
-    devtool: 'eval-source-map',
-    devServer: {
-        contentBase: './build',
-        noInfo: true, //  --no-info option
-        inline: true
-    },
     plugins: [
-        // new webpack.optimize.UglifyJsPlugin({
-        //     sourceMap: true,
-        //     compress: {
-        //         warnings: false
-        //     }
-        // }),
-        // new webpack.BannerPlugin(banner),
-        // new ExtractTextPlugin('build/main.css', {
-        //     allChunks: true
-        // })
+        new ExtractTextPlugin('react-elasticslider.min.css'),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: false,
+            compress: {
+                warnings: false
+            },
+            output: {
+                comments: false,
+            },
+        }),
+        new webpack.BannerPlugin(banner),
     ]
 };
-
-// var path = require("path");
-//     module.exports = {
-//         entry: {
-//         app: ['./src/main.js']
-//     },
-//     output: {
-//         path: path.resolve(__dirname, 'build'),
-//         filename: 'bundle.js'
-//     },
-//     module: {
-//         loaders: [{
-//             test: /\.jsx?$/,
-//             exclude: /(node_modules|bower_components)/,
-//             loader: 'babel', // 'babel-loader' is also a legal name to reference
-//             query: {
-//                 presets: ['react', 'es2015']
-//             }
-//         }]
-//     },
-//     plugins: [
-//         new webpack.optimize.CommonsChunkPlugin({
-//             name:      'main', // Move dependencies to our main file
-//             children:  true, // Look for common dependencies in all children,
-//             minChunks: 2, // How many times a dependency must come up before being extracted
-//         }),
-//     ],
-// };

@@ -3,7 +3,8 @@ import React from 'react';
 import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import ElasticSliderCore from '../bower_components/elasticslider-core/src/elasticslider';
-// import ElasticSliderArrows from './elasticslider-arrows';
+import ElasticSliderArrows from './elasticslider-arrows';
+require('../scss/ElasticSlider.scss');
 
 var ElasticSlider = React.createClass({
     _disablePagi: false,
