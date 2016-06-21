@@ -1,6 +1,6 @@
 {
   "name": "react-elasticslider",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "An agnostic and responsive slider.",
   "authors": [
     "Jamy Golden <jamygolden@gmail.com>"
@@ -14,7 +14,7 @@
     "carousel"
   ],
   "dependencies": {
-    "elasticslider-core": "~0.4.7",
+    "elasticslider-core": "^0.5.0",
     "react": "~0.14.2"
   },
   "devDependencies": {}

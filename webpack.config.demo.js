@@ -1,15 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const pkg = require('./package.json');
-const banner = [
-    pkg.name + ' - ' + pkg.description,
-    '@version v' + pkg.version,
-    '@link ' + pkg.homepage,
-    '@license ' + pkg.license,
-    ''
-].join('\n');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 const PATHS = {
     absolute: __dirname,
     app: path.resolve(__dirname, 'src'),
@@ -18,26 +10,18 @@ const PATHS = {
 };
 
 module.exports = {
-    devtool: 'source-map',
     entry: {
-        app: path.join(PATHS.app, 'js/elasticslider.js'),
+        app: path.join(PATHS.app, 'demo/main.js'),
     },
     output: {
-        path: PATHS.dist,
-        filename: `${pkg.name.toLowerCase()}.min.js`,
-        libraryTarget: 'commonjs2',
-    },
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'lodash': '_',
-        'elasticslider-core': 'ElasticSliderCore',
+        path: PATHS.build,
+        filename: `${pkg.name.toLowerCase()}-demo.js`
     },
     module: {
         loaders: [
             {
-                test: /dist\/.+\.css$/,
-                loader: ExtractTextPlugin.extract('style', 'css'),
+                test: /.+\.css$/,
+                loaders: ['style', 'css'],
             },
             {
                 test: /\.scss$/,
@@ -45,18 +29,21 @@ module.exports = {
                 include: [PATHS.app, path.resolve(PATHS.app, 'scss')],
             },
             {
-                test: /src\/.+\.js$/,
+                test: /.+\.js$/,
                 exclude: /node_modules/,
-                include: PATHS.app,
                 loader: 'babel-loader',
                 query: {
                     presets: ['react', 'es2015']
                 }
-          }
+            },
+            {
+                test: /\.html$/,
+                loader: ExtractTextPlugin.extract('html'),
+            }
         ]
     },
     plugins: [
-        new ExtractTextPlugin('react-elasticslider.min.css'),
+        new ExtractTextPlugin('index.html'),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: false,
             compress: {
@@ -66,6 +53,5 @@ module.exports = {
                 comments: false,
             },
         }),
-        new webpack.BannerPlugin(banner),
     ]
 };
