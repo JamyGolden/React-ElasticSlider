@@ -24,7 +24,14 @@ module.exports = {
     },
     output: {
         path: PATHS.dist,
-        filename: `${pkg.name.toLowerCase()}.min.js`
+        filename: `${pkg.name.toLowerCase()}.min.js`,
+        libraryTarget: 'commonjs2',
+    },
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'lodash': '_',
+        'elasticslider-core': 'ElasticSliderCore',
     },
     module: {
         loaders: [
