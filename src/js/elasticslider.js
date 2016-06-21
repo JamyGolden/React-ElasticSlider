@@ -1,35 +1,26 @@
 'use strict';
 import React from 'react';
-import _ from 'lodash';
 import ReactDOM from 'react-dom';
-import ElasticSliderCore from '../bower_components/elasticslider-core/src/elasticslider';
-import ElasticSliderArrows from './elasticslider-arrows';
-require('../scss/ElasticSlider.scss');
+import ElasticSliderCore from 'elasticslider-core';
 
-var ElasticSlider = React.createClass({
+const ReactElasticSlider = React.createClass({
     _disablePagi: false,
     componentDidMount: function() {
-        this.el = this.refs.container.parentNode;
         this.elasticSlider = new ElasticSliderCore(
-            this.el,
+            this.refs.container.parentNode, // element
             this.props.options
         );
 
-        this._activeSlide = this.props.options.activeSlide || 1;
-        this._totalSlides = this.refs.container.children.length;
-        console.log(this._totalSlides)
-
+        this.totalSlides = this.refs.container.children.length;
     },
     getInitialState: function() {
         return {
-            text: 'jamy'
+            activeSlideIndex: this.props.options.activeSlide - 1
         };
     },
 
     toSlide: function(direction) {
-
-        console.log('trigger', direction, this._activeSlide)
-        var index = null;
+        let index = null;
 
         direction = direction.toLowerCase();
         direction = direction === 'prev' ? direction : 'next';
@@ -43,68 +34,58 @@ var ElasticSlider = React.createClass({
 
             this.elasticSlider.setProp('animationDirection', 'next');
         }
-console.log(this.refs, index, this._totalSlides)
+
         this.setActive(index);
     },
-
     setActive: function(index) {
-        // Throttle multiple triggers
-        if (this._disablePagi === false) {
-            var self = this;
-console.log(index)
-            if (index > this._totalSlides - 1) {
-                index = 0;
-            } else if (index < 0) {
-                index = this._totalSlides - 1;
-            }
-            console.log(index)
-
-            // for (var i = 0; i < scope.pagiArr.length; i++) {
-            //     // Set active item, remove active
-            //     scope.pagiArr[i].isActive = false;
-            //
-            //     if (scope.pagiArr[i].index === index) {
-            //         scope.pagiArr[i].isActive = true;
-            //     }
-            // }
-console.log(this.elasticSlider.toSlide)
-            this.elasticSlider.toSlide({
-                index: index,
-                animation: this.props.options.animation,
-                startAnimationCallback: function(){
-                    console.log('end')
-                    self._activeSlide = index + 1;
-                    self._disablePagi = true;
-                },
-                endAnimationCallback: function(){
-                    self._disablePagi = false;
-                }
-            });
-
+        if (index > this.totalSlides - 1) {
+            index = 0;
+        } else if (index < 0) {
+            index = this.totalSlides - 1;
         }
+
+        this.elasticSlider.toSlide({
+            index: index,
+            animation: this.props.options.animation,
+            startAnimationCallback: function() {
+
+                this.setState({ activeSlideIndex: index });
+
+            }.bind(this),
+            endAnimationCallback: function() {
+
+            }.bind(this)
+        });
     },
 
     render: function() {
-        var arrowEl =
+        const arrowEl =
             <div className="ElasticSlider-arrowList">
                 <div onClick={this.toSlide.bind(this, 'prev')}
-                    className="ElasticSlider-arrowItem ElasticSlider-arrowItem--prev">
+                 className="ElasticSlider-arrowItem ElasticSlider-arrowItem--prev">
                     &lt;
                 </div>
 
                 <div onClick={this.toSlide.bind(this, 'next')}
-                    className="ElasticSlider-arrowItem ElasticSlider-arrowItem--next">
+                 className="ElasticSlider-arrowItem ElasticSlider-arrowItem--next">
                     &gt;
                 </div>
             </div>;
 
-        var pagiEl =
+        const pagiElItems = this.props.children.map(function(item, i) {
+            return (
+                <ElasticSliderPagiItem setActive={this.setActive}
+                 key={i}
+                 index={i}
+                 activeSlideIndex={this.state.activeSlideIndex}>
+                    {i}
+                </ElasticSliderPagiItem>
+            );
+        }.bind(this));
+
+        const pagiEl =
             <div className="ElasticSlider-pagiList">
-                <div ng-repeat="item in pagiArr"
-                 className="ElasticSlider-pagiItem"
-                 ng-className="{'ElasticSlider-pagiItem--isActive': item.isActive}"
-                 ng-click="setActive(item.index);">
-                </div>
+                {pagiElItems}
             </div>;
 
         return (
@@ -130,4 +111,27 @@ console.log(this.elasticSlider.toSlide)
     }
 });
 
-module.exports = ElasticSlider;
+const ElasticSliderPagiItem = React.createClass({
+    getInitialState: function() {
+        return {
+            onClick: function() {
+
+                this.props.setActive(this.props.index);
+
+            }.bind(this)
+        }
+    },
+    render: function() {
+        return (
+            <div
+             className={
+                this.props.activeSlideIndex === this.props.index ? "ElasticSlider-pagiItem ElasticSlider-pagiItem--isActive" : "ElasticSlider-pagiItem"
+             }
+             onClick={this.state.onClick}>
+                {this.props.index}
+            </div>
+        )
+    }
+});
+
+module.exports = ReactElasticSlider;
