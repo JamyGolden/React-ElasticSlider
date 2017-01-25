@@ -1,6 +1,6 @@
 {
   "name": "react-elasticslider",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An agnostic and responsive slider for React.",
   "homepage": "https://github.com/JamyGolden/react-elasticslider",
   "main": "dist/react-elasticslider.min.js",
