@@ -1,6 +1,6 @@
 {
   "name": "react-elasticslider",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An agnostic and responsive slider for React.",
   "homepage": "https://github.com/JamyGolden/react-elasticslider",
   "main": "dist/react-elasticslider.min.js",
@@ -8,9 +8,9 @@
     "dist/react-elasticslider.min.js"
   ],
   "dependencies": {
-    "elasticslider-core": "^0.5.2",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.3"
+    "elasticslider-core": "^0.5.4",
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8"
   },
   "devDependencies": {
     "babel-loader": "^6.2.2",
@@ -21,14 +21,14 @@
     "gulp-babel": "^6.1.2",
     "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.6.0",
-    "gulp-connect": "^4.1.0",
+    "gulp-connect": "^5.0.0",
     "gulp-header": "^1.8.3",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
-    "lodash": "^3.10.1",
-    "node-sass": "^3.4.2"
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.4.0",
+    "gulp-uglify": "^2.0.1",
+    "lodash": "^4.17.4",
+    "webpack": "^1.14.0"
   },
   "scripts": {
     "dist": "gulp dist",
